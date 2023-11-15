@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios' // in order to get this url we need this. 
+import Form from './Form'
 
 const URL = 'http://localhost:9000/api/todos' // so we don't have to repeat this all over the code
 
@@ -72,12 +73,16 @@ export default class App extends React.Component {
         <div id="todos">
           <h2>Todos:</h2>
           {
-          this.state.todos.reduce((acc, td) => {
-            if (this.state.displayCompleteds || !td.completed) return acc.concat(
-              <div onClick={this.toggleCompleted(td.id)} key={td.id}>{td.name}{td.completed ? '✔️' : ''}</div>
-            )
-            return acc
-          }, [])
+            this.state.todos.reduce((acc, td) => {
+              if (this.state.displayCompleteds || !td.completed)
+                return acc.concat(
+                  <div onClick={this.toggleCompleted(td.id)} key={td.id}>
+                    {td.name}
+                    {td.completed ? "✔️" : ""}
+                  </div>
+                );
+              return acc;
+            }, [])
             // return (
             //   <div onClick={this.toggleCompleted(td.id)} key={td.id}>
             //     {td.name}
@@ -86,16 +91,13 @@ export default class App extends React.Component {
             // );
           }
         </div>
-        <form id="todoForm" onSubmit={this.onTodoFormSubmit}>
-          <input
-            value={this.state.todoNameInput}
-            onChange={this.onTodoNameInputChange}
-            type="text"
-            placeholder="Type todo"
-          ></input>
-          <input type="submit"></input>
-        </form>
-        <button onClick={this.toggleDisplayCompleteds}>{this.state.displayCompleteds ? 'Hide' : 'Show'} Completed</button>
+        <Form
+          onTodoFormSubmit={this.onTodoFormSubmit}
+          toggleDisplayCompleteds={this.toggleDisplayCompleteds}
+          onTodoNameInputChange={this.onTodoNameInputChange}
+          todoNameInput={this.state.todoNameInput}
+          displayCompleteds={this.state.displayCompleteds}
+        />
       </div>
     );
   }
